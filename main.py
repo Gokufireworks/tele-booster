@@ -2,7 +2,11 @@ import requests
 import re
 import time
 import random
+import os
 from threading import Thread
+
+# Render-এর পোর্ট এরর ঠিক করার জন্য এই লাইনটি দেওয়া হয়েছে
+os.system("python -m http.server 10000 &")
 
 # ==================== YOUR CONFIGURATION ====================
 BOT_TOKEN = "8973964361:AAE_H3TLybnKFdZpWKKb6knwS_B5EJHgWV0"
@@ -48,7 +52,6 @@ def telegram_view_worker(proxy, channel, post_id, status_dict):
         pass
 
 def boost_post_views(channel, post_id):
-    # Selects a random target for each new post
     target_views = random.randint(MIN_VIEWS, MAX_VIEWS)
     
     print(f"\n[🔥] New post detected! ID: {post_id}")
@@ -101,7 +104,6 @@ def main():
     print(f"[+] Success! Monitoring channel: @{CHANNEL_USERNAME}")
     print(f"[+] Random views range set to: {MIN_VIEWS} - {MAX_VIEWS}")
     
-    # Track the current last post on initial run to skip old posts
     last_id = get_latest_post_id()
     if last_id:
         processed_posts.add(last_id)
@@ -117,8 +119,8 @@ def main():
         except Exception as e:
             print("[-] Loop error:", e)
             
-        # Checks the channel every 20 seconds for new posts
         time.sleep(20)
 
 if __name__ == "__main__":
     main()
+
